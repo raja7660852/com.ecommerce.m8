@@ -7,30 +7,43 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 import ObjectRepositary.HomePage;
 import ObjectRepositary.LoginPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+/**
+ * This class consists of all basic Configuration Annotations of testNG
+ * 
+ * @author Chaitra M
+ *
+ */
 public class BaseClass {
 
-	public static PropertyFileUtility pUtil = new PropertyFileUtility();
-	public static ExcelFileUtility eUtil = new ExcelFileUtility();
-	public static JavaUtility jUtil = new JavaUtility();
-	public static WebDriverUtility wUtil = new WebDriverUtility();
-	public static WebDriver driver = null;
-	public static WebDriver sdriver;
+	public PropertyFileUtility pUtil = new PropertyFileUtility();
+	public ExcelFileUtility eUtil = new ExcelFileUtility();
+	public JavaUtility jUtil = new JavaUtility();
+	public WebDriverUtility wUtil = new WebDriverUtility();
+	public WebDriver driver = null;
 
-	@BeforeSuite
+	//used in Listeners
+	public static WebDriver sdriver; 
+	
+	@BeforeSuite(alwaysRun = true)
 	public void bsConfig() {
 		System.out.println("---- DB Connection Successful ----");
 	}
 
-	@BeforeClass
-	public void bcConfig() throws Exception {
+	//@Parameters("browser")
+	//@BeforeTest
+	@BeforeClass(alwaysRun = true)
+	public void bcConfig(/*String BROWSER*/) throws Exception {
 		
 		String BROWSER = pUtil.readDataFromPropertyFile("browser");
 		String URL = pUtil.readDataFromPropertyFile("url");
@@ -53,33 +66,36 @@ public class BaseClass {
 
 		wUtil.maximizeWindow(driver);
 		wUtil.waitForPageLoad(driver);
-    
+		
+		//used in Listeners
+		sdriver=driver;
+
 		driver.get(URL);
-	      driver=sdriver;
 	}
 
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public void bmConfig() throws Exception {
 		
 		String USERNAME = pUtil.readDataFromPropertyFile("username");
 		String PASSWORD = pUtil.readDataFromPropertyFile("password");
 		
 		LoginPage lp = new LoginPage(driver);
-		lp.LogintoApp(USERNAME, PASSWORD);
+		lp.loginToApp(USERNAME, PASSWORD);
 		System.out.println("---- Login Successful ----");
 	}
 
-	@AfterMethod
-	public void amConfig() throws Exception {
+	@AfterMethod(alwaysRun = true)
+	public void amConfig() throws InterruptedException {
 		
 		HomePage hp = new HomePage(driver);
-		hp.logoutofApp(driver);
+		hp.logoutOfApp(driver);
 		
 		System.out.println("---- Logout Successful ----");
 
 	}
 
-	@AfterClass
+	//@AfterTest
+	@AfterClass(alwaysRun = true)
 	public void acConfig() {
 		
 		driver.quit();
@@ -87,9 +103,8 @@ public class BaseClass {
 
 	}
 
-	@AfterSuite
+	@AfterSuite(alwaysRun = true)
 	public void asConfig() {
 		System.out.println("---- DB Connection Closed ----");
 	}
 }
-

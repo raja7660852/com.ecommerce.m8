@@ -8,71 +8,104 @@ import org.openqa.selenium.support.PageFactory;
 
 import genericUtilities.WebDriverUtility;
 
-public class CreateNewContactPage extends WebDriverUtility {
+public class CreateNewContactPage  extends WebDriverUtility{
 	
-	@FindBy(name="lastname")
-	private WebElement LastEdt;
-	
+
+	@FindBy(name = "lastname")
+	private WebElement LastNameEdt;
+
 	@FindBy(xpath = "//input[@title='Save [Alt+S]']")
 	private WebElement SaveBtn;
+
+	@FindBy(xpath = "(//img[@alt='Select'])[1]")
+	private WebElement OrgLookUpImg;
 	
-	@FindBy(xpath = "(//img[@alt='Select'][1])")
-	private WebElement ContactOrgLookUpImg;
+	@FindBy(name = "search_text")
+	private WebElement OrgSearchEdt;
 	
-	@FindBy(name="search_text")
-	private WebElement ContactOrgSearchEdt;
+	@FindBy(name = "search")
+	private WebElement OrgSearchBtn;
 	
-	@FindBy(name="search")
-	private WebElement ContactOrgSearchBtn;
-	
-	public CreateNewContactPage(WebDriver driver)
-	{
-		PageFactory.initElements(driver,this);
+
+	// initiliazation
+	public CreateNewContactPage(WebDriver driver) {
+		PageFactory.initElements(driver, this);
 	}
 
-	public WebElement getLastEdt() {
-		return LastEdt;
+	//Utilization
+	public WebElement getLastNameEdt() {
+		return LastNameEdt;
 	}
+
 
 	public WebElement getSaveBtn() {
 		return SaveBtn;
 	}
 
-	public WebElement getContactOrgLookUpImg() {
-		return ContactOrgLookUpImg;
+
+	public WebElement getOrgLookUpImg() {
+		return OrgLookUpImg;
 	}
 
-	public WebElement getContactOrgSearchEdt() {
-		return ContactOrgSearchEdt;
+
+	public WebElement getOrgSearchEdt() {
+		return OrgSearchEdt;
 	}
 
-	public WebElement getContactOrgSearchBtn() {
-		return ContactOrgSearchBtn;
+
+	public WebElement getOrgSearchBtn() {
+		return OrgSearchBtn;
 	}
-	public void createNewContact(WebDriver driver,String LASTNAME)
+	
+	//Business Library
+	
+	/**
+	 * This method will create contact with mandatory fields and save
+	 * @param LASTNAME
+	 */
+	public void createNewContact(String LASTNAME)
 	{
-		LastEdt.sendKeys(LASTNAME);
+		LastNameEdt.sendKeys(LASTNAME);
 		SaveBtn.click();
 	}
-	public void createNewContact(WebDriver driver,String LASTNAME,String ORGNAME)
+	
+	/**
+	 * This method will create contact with Organization
+	 * @param driver
+	 * @param LASTNAME
+	 * @param ORGNAME
+	 */
+	public void createNewContact(WebDriver driver,String LASTNAME, String ORGNAME)
 	{
-		LastEdt.sendKeys(LASTNAME);
-		ContactOrgLookUpImg.click();
+		LastNameEdt.sendKeys(LASTNAME);
+		OrgLookUpImg.click();
 		switchToWindow(driver, "Accounts");
-		ContactOrgSearchEdt.sendKeys(ORGNAME);
-		ContactOrgSearchBtn.click();
+		OrgSearchEdt.sendKeys(ORGNAME);
+		OrgSearchBtn.click();
 		driver.findElement(By.xpath("//a[.='"+ORGNAME+"']")).click();
 		switchToWindow(driver, "Contacts");
 		SaveBtn.click();
-		
-		
+	}
 	
-		
-	}
-
-	public void createNewContact(String lASTNAME) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

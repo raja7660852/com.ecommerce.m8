@@ -5,44 +5,52 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-//declaration
-public class LoginPage {
-	@FindBy(name="user_name")
+
+public class LoginPage {    //rule 1
+	
+	//rule 2 - declaration
+	@FindBy(name = "user_name") 
 	private WebElement userNameEdt;
 	
-	@FindBy(name="user_password")
-	private WebElement passWordEdt;
+	@FindBy(name = "user_password")
+	private WebElement passwordEdt;
 	
-	@FindAll({@FindBy(id="submitButton"),@FindBy(xpath = "//input[@type='submit']")})
+	@FindAll({@FindBy(id = "submitButton"),@FindBy(xpath = "//input[@type='submit']")})
 	private WebElement loginBtn;
 	
-	//instalization
+	//Rule 3: Initialisation
 	public LoginPage(WebDriver driver)
 	{
 		PageFactory.initElements(driver, this);
 	}
-//utilization
+
+	//Rule 4: Utilisation
 	public WebElement getUserNameEdt() {
 		return userNameEdt;
 	}
 
-	public WebElement getPassWordEdt() {
-		return passWordEdt;
+	public WebElement getPasswordEdt() {
+		return passwordEdt;
 	}
 
 	public WebElement getLoginBtn() {
 		return loginBtn;
 	}
-//	business library
-	public void LogintoApp(String USERNAME,String PASSWORD)
+	
+	
+	//Business Library - generic methods according to the need of project
+	
+	/**
+	 * This method will login to Application
+	 * @param USERNAME
+	 * @param PASSWORD
+	 */
+	public void loginToApp(String USERNAME, String PASSWORD)
 	{
 		userNameEdt.sendKeys(USERNAME);
-		passWordEdt.sendKeys(PASSWORD);
+		passwordEdt.sendKeys(PASSWORD);
 		loginBtn.click();
 	}
-	
-	
-	
 	
 	
 

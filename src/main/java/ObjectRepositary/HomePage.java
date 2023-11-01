@@ -7,77 +7,90 @@ import org.openqa.selenium.support.PageFactory;
 
 import genericUtilities.WebDriverUtility;
 
-public class HomePage extends WebDriverUtility {
+
+public class HomePage extends WebDriverUtility{
 	
-	@FindBy(linkText ="Organizations")
-	private WebElement orgLink;
+	//Declaration - dropdowns,frames,windows,textFields, popups
+	@FindBy(linkText = "Organizations")
+	private WebElement organizationLnk;
 	
-	@FindBy(linkText="Contacts")
-	private WebElement contactsLink;
+	@FindBy(linkText = "Contacts")
+	private WebElement contactsLnk;
 	
 	@FindBy(linkText = "Products")
-	private WebElement productsLink;
+	private WebElement productLnk;
 	
 	@FindBy(xpath = "//img[@src='themes/softed/images/user.PNG']")
-	private WebElement administratorimg;
+	private WebElement administratorImg;
 	
 	@FindBy(linkText = "Sign Out")
-	private WebElement signOutLink;
+	private WebElement signoutLnk;
 	
+	//Initialization
 	public HomePage(WebDriver driver)
 	{
 		PageFactory.initElements(driver, this);
 	}
 
+	//Utilization
+	public WebElement getOrganizationLnk() {
+		return organizationLnk;
+	}
+
+	public WebElement getContactsLnk() {
+		return contactsLnk;
+	}
+
+	public WebElement getProductLnk() {
+		return productLnk;
+	}
+
+	public WebElement getAdministratorImg() {
+		return administratorImg;
+	}
+
+	public WebElement getSingoutLnk() {
+		return signoutLnk;
+	}
 	
-	public WebElement getClickonorgLink() {
-		return orgLink;
+	//Business Library	
+	/**
+	 * This method will click on organizations link
+	 */
+	public void clickOnOrganizationLink()
+	{
+		organizationLnk.click();
 	}
-
-
-	public WebElement getContactsLink() {
-		return contactsLink;
-	}
-
-	public WebElement getProductsLink() {
-		return productsLink;
-	}
-
-	public WebElement getAdministratorimg() {
-		return administratorimg;
-	}
-
-	public WebElement getSignOutLink() {
-		return signOutLink;
-	}
-	//genric method
 	
-	public void clickonorgnationLink()
+	/**
+	 * This method will click on contacts link
+	 */
+	public void clickOnContactsLink()
 	{
-		orgLink.click();
+		contactsLnk.click();
 	}
-	public void clickoncontactsLink()
+	
+	/**
+	 * This method will logout of application
+	 * @param driver
+	 * @throws InterruptedException
+	 */
+	public void logoutOfApp(WebDriver driver) throws InterruptedException
 	{
-		contactsLink.click();
+		mouseHoverAction(driver, administratorImg);
+		Thread.sleep(1000);
+		signoutLnk.click();
 	}
-	public void clickonproductLink()
-	{
-		productsLink.click();
-	}
-	public void clickonadminstrLink()
-	{
-	administratorimg.click();
-	}
-	public void clickonsignoutLink()
-	{
-		signOutLink.click();
-	}
-	public void logoutofApp(WebDriver driver) throws Exception
-	{ 
-		mouseHoverAction(driver, administratorimg);
-		Thread.sleep(3000);
-		signOutLink.click();
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
