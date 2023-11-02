@@ -28,6 +28,11 @@ public class OrganizationInfoPage {
 	{
 		return OrgHeaderText.getText();
 	}
+
+	public void clickOnOrganizationLookUpImg() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

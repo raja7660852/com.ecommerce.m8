@@ -1,8 +1,8 @@
 package organizationTests;
 
+import java.io.IOException;
 
-
-import org.testng.annotations.Test;
+import org.apache.poi.EncryptedDocumentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -10,17 +10,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import ObjectRepositary.createNeworganizationPage;
-import ObjectRepositary.organizationInfoPage;
-import genericUtilities.BaseClass;
 import genericUtilities.ExcelFileUtility;
 import genericUtilities.JavaUtility;
 import genericUtilities.PropertyFileUtility;
 import genericUtilities.WebDriverUtility;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import objectRepository.CreateNewOrganizationPage;
+import objectRepository.HomePage;
+import objectRepository.LoginPage;
+import objectRepository.OrganizationInfoPage;
+import objectRepository.OrganizationsPage;
 
-
-public class CreateMultipleOrgWithIndustry extends BaseClass{
+public class CreateMultipleOrgWithIndustry {
 
 	ExcelFileUtility eUtil = new ExcelFileUtility();
 	PropertyFileUtility pUtil = new PropertyFileUtility();
@@ -28,7 +29,7 @@ public class CreateMultipleOrgWithIndustry extends BaseClass{
 	JavaUtility jUtil = new JavaUtility();
 
 	@Test(dataProvider = "getData")
-	public void createMultipleOrg(String ORG, String INDUSTRYNAME) throws Exception {
+	public void createMultipleOrg(String ORG, String INDUSTRYNAME) throws IOException, InterruptedException {
 		
 		WebDriver driver = null;
 		
@@ -64,24 +65,24 @@ public class CreateMultipleOrgWithIndustry extends BaseClass{
 		driver.get(URL);
 
 		// Step 5: Login To Application
-		ObjectRepositary.LoginPage lp = new ObjectRepositary.LoginPage(driver);
-		lp.LogintoApp(USERNAME, PASSWORD);
+		LoginPage lp = new LoginPage(driver);
+		lp.loginToApp(USERNAME, PASSWORD);
 
 		// Step 6: click on Organization
-		ObjectRepositary.HomePage hp = new ObjectRepositary.HomePage(driver);
-		hp.clickonorgnationLink();
+		HomePage hp = new HomePage(driver);
+		hp.clickOnOrganizationLink();
 
 		// Step 7: Click on Create Organization look Up Image
-		organizationInfoPage op = new organizationInfoPage(driver);
+		OrganizationsPage op = new OrganizationsPage(driver);
 		op.clickOnOrganizationLookUpImg();
 
 		// Step 8: Create new Organization with Mandatory fields
-		createNeworganizationPage cnop = new createNeworganizationPage(driver);
+		CreateNewOrganizationPage cnop = new CreateNewOrganizationPage(driver);
 		cnop.createNewOrganization(ORGNAME, INDUSTRYNAME);
 		wUtil.captureScreenShot(driver, ORGNAME);
 
 		// Step 9: Validate for Organization
-		organizationInfoPage oip = new organizationInfoPage(driver);
+		OrganizationInfoPage oip = new OrganizationInfoPage(driver);
 		String orgHeader = oip.getHeaderText();
 		if (orgHeader.contains(ORGNAME)) {
 			System.out.println(orgHeader);
@@ -91,13 +92,12 @@ public class CreateMultipleOrgWithIndustry extends BaseClass{
 		}
 		
 		//Step 10: Logout
-		hp.logoutofApp(driver);
+		hp.logoutOfApp(driver);
 	}
 
 	@DataProvider
-	public Object[][] getData() throws Exception {
+	public Object[][] getData() throws EncryptedDocumentException, IOException {
 		return eUtil.readMultipleData("MultipleOrganizations");
 	}
 
 }
-
